@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             val jsonArray = JSONObject(json).getJSONArray("data")
 
             val arrayLength = jsonArray.length().dec()
-            val list: ArrayList<Cryptocurrency> = arrayListOf()
+            val list = arrayListOf<Cryptocurrency>()
 
             for (i: Int in 0..arrayLength) {
                 val jsonObject = jsonArray[i] as JSONObject
