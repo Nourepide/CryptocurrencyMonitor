@@ -21,9 +21,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = MainListAdapter()
 
-            data = JsonTask()
-                .execute().get()
-            adapter!!.notifyDataSetChanged()
+            JsonTask().execute()
         }
     }
 
@@ -51,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         val symbol = itemView.findViewById<TextView>(R.id.symbol)!!
     }
 
-    private class JsonTask : AsyncTask<Any, Unit, ArrayList<Cryptocurrency>>() {
+    private inner class JsonTask : AsyncTask<Any, Unit, ArrayList<Cryptocurrency>>() {
         override fun doInBackground(vararg params: Any): ArrayList<Cryptocurrency> {
             val url = "https://api.coinmarketcap.com/v2/listings/"
             val json = getDataURL(url)
@@ -74,6 +72,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             return list
+        }
+
+        override fun onPostExecute(result: ArrayList<Cryptocurrency>) {
+            data = result
+            findViewById<RecyclerView>(R.id.list).adapter!!.notifyDataSetChanged()
         }
     }
 }
