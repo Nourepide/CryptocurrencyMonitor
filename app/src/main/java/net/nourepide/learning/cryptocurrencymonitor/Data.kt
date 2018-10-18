@@ -1,6 +1,6 @@
-package com.nourepide.learning.cryptocurrencymonitor
+package net.nourepide.learning.cryptocurrencymonitor
 
-import com.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
+import net.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection

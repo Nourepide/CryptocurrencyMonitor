@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.nourepide.learning.cryptocurrencymonitor"
+        applicationId "net.nourepide.learning.cryptocurrencymonitor"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1

@@ -1,8 +1,8 @@
-package com.nourepide.learning.cryptocurrencymonitor
+package net.nourepide.learning.cryptocurrencymonitor
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
