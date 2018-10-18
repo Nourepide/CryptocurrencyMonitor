@@ -36,9 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(viewHolder: MainViewHolder, value: Int) {
             viewHolder.apply {
-                number.text = data[value].number
-                name.text = data[value].name
-                symbol.text = data[value].symbol
+                val source = data[value]
+
+                number.text = source.number
+                name.text = source.name
+                symbol.text = source.symbol
             }
         }
     }
