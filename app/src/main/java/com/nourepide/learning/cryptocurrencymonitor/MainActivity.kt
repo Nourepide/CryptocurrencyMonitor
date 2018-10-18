@@ -1,4 +1,10 @@
-package com.nourepide.learning.cryptocurrencymonitor
+Будет удалено .idea/vcs.xml
+Будет удалено app/libs/
+Будет удалено app/src/androidTest/
+Будет удалено app/src/test/Будет удалено .idea/vcs.xml
+Будет удалено app/libs/
+Будет удалено app/src/androidTest/
+Будет удалено app/src/test/package com.nourepide.learning.cryptocurrencymonitor
 
 import android.os.AsyncTask
 import android.os.Bundle
@@ -59,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
             val arrayLength = jsonArray.length().dec()
             val list: ArrayList<Cryptocurrency> = arrayListOf()
+
             for (i: Int in 0..arrayLength) {
                 val jsonObject = jsonArray[i] as JSONObject
 
