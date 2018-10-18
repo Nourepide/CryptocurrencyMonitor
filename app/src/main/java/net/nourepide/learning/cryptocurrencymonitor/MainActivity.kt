@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class MainListAdapter : RecyclerView.Adapter<MainViewHolder>() {
+    private class MainListAdapter : RecyclerView.Adapter<MainViewHolder>() {
         override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(
             LayoutInflater
                 .from(viewGroup.context)
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val number = itemView.findViewById<TextView>(R.id.number)!!
         val name = itemView.findViewById<TextView>(R.id.name)!!
         val symbol = itemView.findViewById<TextView>(R.id.symbol)!!
