@@ -57,11 +57,9 @@ class MainActivity : AppCompatActivity() {
             val json = getDataURL(url)
 
             val jsonArray = JSONObject(json).getJSONArray("data")
-
-            val arrayLength = jsonArray.length().dec()
             val list = arrayListOf<Cryptocurrency>()
 
-            for (i: Int in 0..arrayLength) {
+            for (i in 0 until jsonArray.length()) {
                 val jsonObject = jsonArray[i] as JSONObject
 
                 list.add(
