@@ -1,5 +1,6 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
+import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import net.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
 import org.json.JSONObject
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = MainListAdapter()
 
-            JsonTask().execute(this)
+            JsonTask().execute(ContextLayout(this@MainActivity, this))
         }
     }
 
@@ -51,10 +53,16 @@ class MainActivity : AppCompatActivity() {
         val symbol = itemView.findViewById<TextView>(R.id.symbol)!!
     }
 
-    private data class ResultTask(val cryptocurrencies: ArrayList<Cryptocurrency>, val recyclerView: RecyclerView)
+    private data class ContextLayout(val activityContext: Context, val recyclerView: RecyclerView)
 
-    private class JsonTask : AsyncTask<RecyclerView, Unit, ResultTask>() {
-        override fun doInBackground(vararg params: RecyclerView): ResultTask {
+    private data class ResultTask(
+        val cryptocurrencies: ArrayList<Cryptocurrency>,
+        val activityContext: Context,
+        val recyclerView: RecyclerView
+    )
+
+    private class JsonTask : AsyncTask<ContextLayout, Unit, ResultTask>() {
+        override fun doInBackground(vararg params: ContextLayout): ResultTask {
             val url = "https://api.coinmarketcap.com/v2/listings/"
             val json = getDataURL(url)
 
@@ -73,12 +81,17 @@ class MainActivity : AppCompatActivity() {
                 )
             }
 
-            return ResultTask(list, params.first())
+            return ResultTask(list, params[0].activityContext, params[0].recyclerView)
         }
 
         override fun onPostExecute(result: ResultTask) {
-            data = result.cryptocurrencies
-            result.recyclerView.adapter!!.notifyDataSetChanged()
+            val (cryptocurrencies, activityContext, recyclerView) = result
+
+            data = cryptocurrencies
+            recyclerView.adapter!!.notifyDataSetChanged()
+
+            val animation = AnimationUtils.loadAnimation(activityContext, R.anim.appearance)
+            recyclerView.startAnimation(animation)
         }
     }
 }
