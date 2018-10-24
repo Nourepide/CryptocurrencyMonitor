@@ -33,12 +33,16 @@ class MainActivity : AppCompatActivity() {
 
                 runOnUiThread(adapter!!::notifyDataSetChanged)
 
-                animation = AnimationUtils.loadAnimation(context, R.anim.appearance)
+                if (!isAnimated) {
+                    animation = AnimationUtils.loadAnimation(context, R.anim.appearance)
+                    isAnimated = true
+                }
             }
         }
     }
 
     companion object {
         val data = arrayListOf<Cryptocurrency>()
+        var isAnimated = false
     }
 }
