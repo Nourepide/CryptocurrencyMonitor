@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import net.nourepide.learning.cryptocurrencymonitor.MainActivity.Companion.data
 
 class MainListAdapter : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(

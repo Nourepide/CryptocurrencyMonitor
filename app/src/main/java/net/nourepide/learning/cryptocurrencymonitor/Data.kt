@@ -1,12 +1,11 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
-import net.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-var data = arrayListOf<Cryptocurrency>()
+fun getDataURL() = getDataURL("https://api.coinmarketcap.com/v2/listings/")
 
 fun getDataURL(url: String): String {
     lateinit var buffer: StringBuffer
