@@ -16,9 +16,9 @@ class MainListAdapter : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
     override fun getItemCount() = data.size
 
     override fun onBindViewHolder(viewHolder: MainViewHolder, value: Int) {
-        viewHolder.apply {
-            val source = data[value]
+        val source = data[value]
 
+        viewHolder.apply {
             number.text = source.number
             name.text = source.name
             symbol.text = source.symbol
