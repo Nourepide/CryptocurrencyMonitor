@@ -1,6 +1,5 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
-import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = MainListAdapter()
 
-            JsonTask().execute(ContextLayout(this@MainActivity, this))
+            JsonTask().execute(this)
         }
     }
 
@@ -53,16 +52,13 @@ class MainActivity : AppCompatActivity() {
         val symbol = itemView.findViewById<TextView>(R.id.symbol)!!
     }
 
-    private data class ContextLayout(val activityContext: Context, val recyclerView: RecyclerView)
-
     private data class ResultTask(
         val cryptocurrencies: ArrayList<Cryptocurrency>,
-        val activityContext: Context,
         val recyclerView: RecyclerView
     )
 
-    private class JsonTask : AsyncTask<ContextLayout, Unit, ResultTask>() {
-        override fun doInBackground(vararg params: ContextLayout): ResultTask {
+    private class JsonTask : AsyncTask<RecyclerView, Unit, ResultTask>() {
+        override fun doInBackground(vararg params: RecyclerView): ResultTask {
             val url = "https://api.coinmarketcap.com/v2/listings/"
             val json = getDataURL(url)
 
@@ -81,17 +77,17 @@ class MainActivity : AppCompatActivity() {
                 )
             }
 
-            return ResultTask(list, params[0].activityContext, params[0].recyclerView)
+            return ResultTask(list, params.first())
         }
 
         override fun onPostExecute(result: ResultTask) {
-            val (cryptocurrencies, activityContext, recyclerView) = result
+            val (cryptocurrencies, recyclerView) = result
 
             data = cryptocurrencies
             recyclerView.adapter!!.notifyDataSetChanged()
 
-            val animation = AnimationUtils.loadAnimation(activityContext, R.anim.appearance)
-            recyclerView.startAnimation(animation)
+            val animation = AnimationUtils.loadAnimation(recyclerView.context, R.anim.appearance)
+            recyclerView.animation = animation
         }
     }
 }
