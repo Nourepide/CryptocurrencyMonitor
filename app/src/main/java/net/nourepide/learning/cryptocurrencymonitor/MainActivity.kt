@@ -19,30 +19,34 @@ class MainActivity : AppCompatActivity() {
             adapter = MainListAdapter()
 
             thread {
-                val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
+                if (!isInitialized) {
+                    val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
 
-                for (i in 0 until jsonArray.length()) {
-                    val jsonObject = jsonArray[i] as JSONObject
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray[i] as JSONObject
 
-                    data += Cryptocurrency(
-                        jsonObject.getString("id"),
-                        jsonObject.getString("name"),
-                        jsonObject.getString("symbol")
-                    )
+                        data += Cryptocurrency(
+                            jsonObject.getString("id"),
+                            jsonObject.getString("name"),
+                            jsonObject.getString("symbol")
+                        )
+                    }
+
+                    isInitialized = true
                 }
 
-                runOnUiThread(adapter!!::notifyDataSetChanged)
-
-                if (!isAnimated) {
-                    animation = AnimationUtils.loadAnimation(context, R.anim.appearance)
-                    isAnimated = true
-                }
+                runOnUiThread { reload() }
             }
         }
     }
 
     companion object {
         val data = arrayListOf<Cryptocurrency>()
-        var isAnimated = false
+        private var isInitialized = false
+    }
+
+    private fun RecyclerView.reload() {
+        adapter!!.notifyDataSetChanged()
+        startAnimation(AnimationUtils.loadAnimation(context, R.anim.appearance))
     }
 }
