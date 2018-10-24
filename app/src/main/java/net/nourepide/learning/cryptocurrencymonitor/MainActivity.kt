@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             adapter = MainListAdapter()
 
             thread {
-                val jsonArray = JSONObject(getDataURL()).getJSONArray("data")
+                val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
 
                 for (i in 0 until jsonArray.length()) {
                     val jsonObject = jsonArray[i] as JSONObject
