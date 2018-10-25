@@ -19,21 +19,7 @@ class MainActivity : AppCompatActivity() {
             adapter = MainListAdapter()
 
             thread {
-                if (!isInitialized) {
-                    val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
-
-                    for (i in 0 until jsonArray.length()) {
-                        val jsonObject = jsonArray[i] as JSONObject
-
-                        data += Cryptocurrency(
-                            jsonObject.getString("id"),
-                            jsonObject.getString("name"),
-                            jsonObject.getString("symbol")
-                        )
-                    }
-
-                    isInitialized = true
-                }
+                if (!isInitialized) initialization()
 
                 runOnUiThread { reload() }
             }
@@ -43,6 +29,22 @@ class MainActivity : AppCompatActivity() {
     companion object {
         val data = arrayListOf<Cryptocurrency>()
         private var isInitialized = false
+    }
+
+    private fun initialization() {
+        isInitialized = true
+
+        val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
+
+        (0 until jsonArray.length())
+            .map { jsonArray[it] as JSONObject }
+            .forEach {
+                data += Cryptocurrency(
+                    it.getString("id"),
+                    it.getString("name"),
+                    it.getString("symbol")
+                )
+            }
     }
 
     private fun RecyclerView.reload() {
