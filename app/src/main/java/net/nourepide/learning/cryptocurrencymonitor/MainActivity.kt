@@ -15,14 +15,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val viewModel = getViewModel()
-
         findViewById<RecyclerView>(R.id.list).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(viewModel.data)
+            adapter = MainListAdapter(getViewModel())
 
             thread {
-                initialization(viewModel)
+                initialization(getViewModel())
 
                 runOnUiThread { reload() }
             }
