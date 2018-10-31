@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import net.nourepide.learning.cryptocurrencymonitor.MainActivity.Companion.data
+import net.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
 
-class MainListAdapter : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
+class MainListAdapter(val data: ArrayList<Cryptocurrency>) : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(
         LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_cryptocurrency, viewGroup, false)

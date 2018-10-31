@@ -1,5 +1,6 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -14,32 +15,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val viewModel = getViewModel()
+
         findViewById<RecyclerView>(R.id.list).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter()
+            adapter = MainListAdapter(viewModel.data)
 
             thread {
-                if (!isInitialized) initialization()
+                initialization(viewModel)
 
                 runOnUiThread { reload() }
             }
         }
     }
 
-    companion object {
-        val data = arrayListOf<Cryptocurrency>()
-        private var isInitialized = false
-    }
-
-    private fun initialization() {
-        isInitialized = true
+    private fun initialization(viewModel: MainViewModel) {
+        when (viewModel.isInitialized) {
+            false -> viewModel.isInitialized = true
+            true -> return
+        }
 
         val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
 
         (0 until jsonArray.length())
             .map { jsonArray[it] as JSONObject }
             .forEach {
-                data += Cryptocurrency(
+                viewModel.data += Cryptocurrency(
                     it.getString("id"),
                     it.getString("name"),
                     it.getString("symbol")
@@ -51,4 +52,8 @@ class MainActivity : AppCompatActivity() {
         adapter!!.notifyDataSetChanged()
         startAnimation(AnimationUtils.loadAnimation(context, R.anim.appearance))
     }
+
+    private fun getViewModel() = ViewModelProviders
+        .of(this)
+        .get(MainViewModel::class.java)
 }
