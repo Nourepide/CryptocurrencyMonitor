@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.ProgressBar
 import net.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
 import org.json.JSONObject
 import kotlin.concurrent.thread
@@ -46,7 +48,11 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    private fun getProgressBar() = findViewById<ProgressBar>(R.id.progressBar)
+
     private fun RecyclerView.reload() {
+        getProgressBar().visibility = View.GONE
+
         adapter!!.notifyDataSetChanged()
         startAnimation(AnimationUtils.loadAnimation(context, R.anim.appearance))
     }
