@@ -5,18 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import net.nourepide.learning.cryptocurrencymonitor.MainActivity.Companion.data
 
-class MainListAdapter : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
+class MainListAdapter(private val viewModel: MainViewModel) : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(
         LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_cryptocurrency, viewGroup, false)
     )
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = viewModel.data.size
 
     override fun onBindViewHolder(viewHolder: MainViewHolder, value: Int) {
-        val source = data[value]
+        val source = viewModel.data[value]
 
         viewHolder.apply {
             number.text = source.number
