@@ -11,16 +11,18 @@ import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         findViewById<RecyclerView>(R.id.list).apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(getViewModel())
+            adapter = MainListAdapter(viewModel)
 
             thread {
-                initialization(getViewModel())
+                initialization(viewModel)
 
                 runOnUiThread { reload() }
             }
@@ -50,8 +52,4 @@ class MainActivity : AppCompatActivity() {
         adapter!!.notifyDataSetChanged()
         startAnimation(AnimationUtils.loadAnimation(context, R.anim.appearance))
     }
-
-    private fun getViewModel() = ViewModelProviders
-        .of(this)
-        .get(MainViewModel::class.java)
 }
