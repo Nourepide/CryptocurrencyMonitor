@@ -6,28 +6,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import net.nourepide.learning.cryptocurrencymonitor.MainListAdapter.MainViewHolder
 import net.nourepide.learning.cryptocurrencymonitor.databinding.ItemCryptocurrencyBinding
-import net.nourepide.learning.cryptocurrencymonitor.entity.Cryptocurrency
 
 class MainListAdapter(private val viewModel: MainViewModel) : RecyclerView.Adapter<MainViewHolder>() {
-    override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(getLayout(viewGroup))
+    override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(
+        ItemCryptocurrencyBinding
+            .inflate(
+                LayoutInflater.from(viewGroup.context),
+                viewGroup,
+                false
+            )
+    )
 
     override fun getItemCount() = viewModel.data.size
 
     override fun onBindViewHolder(viewHolder: MainViewHolder, value: Int) {
-        viewHolder.bind(viewModel.data[value])
+        (viewHolder.binding as ItemCryptocurrencyBinding).cryptocurrency = viewModel.data[value]
     }
 
-    private fun getLayout(viewGroup: ViewGroup) = ItemCryptocurrencyBinding
-        .inflate(
-            LayoutInflater.from(viewGroup.context),
-            viewGroup,
-            false
-        )
-
-    class MainViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Cryptocurrency) {
-            binding.setVariable(BR.cryptocurrency, data)
-            binding.executePendingBindings()
-        }
-    }
+    class MainViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 }
