@@ -1,33 +1,35 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
+import net.nourepide.learning.cryptocurrencymonitor.databinding.ActivityMainBinding
 import net.nourepide.learning.cryptocurrencymonitor.entity.Cryptocurrency
 import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
+    private val contentView by lazy {
+        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        findViewById<RecyclerView>(R.id.list).apply {
+        contentView.list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = MainListAdapter(viewModel)
+        }
 
-            thread {
-                initialization(viewModel)
+        thread {
+            viewModel.initialization()
 
-                runOnUiThread { reload() }
-            }
+            runOnUiThread { contentView.reload() }
         }
     }
 
@@ -50,12 +52,9 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun getProgressBar() = findViewById<ProgressBar>(R.id.progressBar)
-
-    private fun RecyclerView.reload() {
-        getProgressBar().visibility = View.GONE
-
-        adapter!!.notifyDataSetChanged()
-        startAnimation(AnimationUtils.loadAnimation(context, R.anim.appearance))
+    private fun ActivityMainBinding.reload() {
+        progressBar.visibility = View.GONE
+        list.adapter!!.notifyDataSetChanged()
+        list.startAnimation(AnimationUtils.loadAnimation(this.root.context, R.anim.appearance))
     }
 }
