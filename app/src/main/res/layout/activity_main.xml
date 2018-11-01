@@ -23,7 +23,7 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:scrollbarSize="4dp"
-        android:scrollbarThumbVertical="@color/colorSymbol"
+        android:scrollbarThumbVertical="@drawable/scrollbar_background"
         android:scrollbars="vertical"
         tools:listitem="@layout/item_cryptocurrency" />
 </android.support.constraint.ConstraintLayout>
