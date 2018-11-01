@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
-import net.nourepide.learning.cryptocurrencymonitor.enity.Cryptocurrency
+import net.nourepide.learning.cryptocurrencymonitor.entity.Cryptocurrency
 import org.json.JSONObject
 import kotlin.concurrent.thread
 
