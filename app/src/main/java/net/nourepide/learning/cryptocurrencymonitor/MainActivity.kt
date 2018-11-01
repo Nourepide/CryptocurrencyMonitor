@@ -8,8 +8,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.animation.AnimationUtils
 import net.nourepide.learning.cryptocurrencymonitor.databinding.ActivityMainBinding
-import net.nourepide.learning.cryptocurrencymonitor.entity.Cryptocurrency
-import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -31,25 +29,6 @@ class MainActivity : AppCompatActivity() {
 
             runOnUiThread { contentView.reload() }
         }
-    }
-
-    private fun initialization(viewModel: MainViewModel) {
-        when (viewModel.isInitialized) {
-            false -> viewModel.isInitialized = true
-            true -> return
-        }
-
-        val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
-
-        (0 until jsonArray.length())
-            .map { jsonArray[it] as JSONObject }
-            .forEach {
-                viewModel.data += Cryptocurrency(
-                    it.getString("id"),
-                    it.getString("name"),
-                    it.getString("symbol")
-                )
-            }
     }
 
     private fun ActivityMainBinding.reload() {
