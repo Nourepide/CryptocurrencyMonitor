@@ -27,13 +27,15 @@ class MainActivity : AppCompatActivity() {
         thread {
             viewModel.initialization()
 
-            runOnUiThread { contentView.reload() }
+            runOnUiThread { reload() }
         }
     }
 
-    private fun ActivityMainBinding.reload() {
-        progressBar.visibility = View.GONE
-        list.adapter!!.notifyDataSetChanged()
-        list.startAnimation(AnimationUtils.loadAnimation(this.root.context, R.anim.appearance))
+    private fun reload() {
+        contentView.apply {
+            progressBar.visibility = View.GONE
+            list.adapter!!.notifyDataSetChanged()
+            list.startAnimation(AnimationUtils.loadAnimation(this.root.context, R.anim.appearance))
+        }
     }
 }
