@@ -12,14 +12,14 @@ import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
-    private val contentView by lazy {
+    private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        contentView.list.apply {
+        binding.list.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = MainListAdapter(viewModel)
         }
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reload() {
-        contentView.apply {
+        binding.apply {
             progressBar.visibility = View.GONE
             list.adapter!!.notifyDataSetChanged()
             list.startAnimation(AnimationUtils.loadAnimation(this.root.context, R.anim.appearance))
