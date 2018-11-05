@@ -1,12 +1,15 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableInt
+import android.view.View
 import net.nourepide.learning.cryptocurrencymonitor.entity.Cryptocurrency
 import org.json.JSONObject
 
 class MainViewModel : ViewModel() {
-    val data = arrayListOf<Cryptocurrency>()
     private var isInitialized = false
+    val data = arrayListOf<Cryptocurrency>()
+    val isVisible = ObservableInt(View.VISIBLE)
 
     fun initialization() {
         when (isInitialized) {
@@ -25,5 +28,7 @@ class MainViewModel : ViewModel() {
                     it.getString("symbol")
                 )
             }
+
+        isVisible.set(View.GONE)
     }
 }

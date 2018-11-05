@@ -6,41 +6,31 @@ import android.os.Bundle
 import android.support.annotation.MainThread
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import android.view.animation.AnimationUtils
 import net.nourepide.learning.cryptocurrencymonitor.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy { DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        thread {
-            viewModel.initialization()
-            runOnUiThread { reload() }
+        binding.mainViewModel = viewModel.apply {
+            thread {
+                initialization()
+                runOnUiThread { reload() }
+            }
         }
     }
 
     @MainThread
     private fun reload() {
-        fun disableProgressBar() {
-            binding.progressBar.visibility = View.GONE
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = MainListAdapter(viewModel).apply { notifyDataSetChanged() }
+            startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.appearance))
         }
-
-        fun setDataRecyclerView() {
-            binding.recyclerView.apply {
-                layoutManager = LinearLayoutManager(this@MainActivity)
-                adapter = MainListAdapter(viewModel).apply { notifyDataSetChanged() }
-                startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.appearance))
-            }
-        }
-
-        disableProgressBar()
-        setDataRecyclerView()
     }
 }
