@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.animation.AnimationUtils
 import net.nourepide.learning.cryptocurrencymonitor.databinding.ActivityMainBinding
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
@@ -17,19 +16,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.mainViewModel = viewModel.apply {
-            thread {
-                initialization()
-                runOnUiThread { reload() }
-            }
-        }
+        binding.mainViewModel = viewModel
+
+        reload()
     }
 
     @MainThread
     private fun reload() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(viewModel).apply { notifyDataSetChanged() }
+            adapter = MainListAdapter(this@MainActivity, viewModel).apply { notifyDataSetChanged() }
             startAnimation(AnimationUtils.loadAnimation(applicationContext, R.anim.appearance))
         }
     }
