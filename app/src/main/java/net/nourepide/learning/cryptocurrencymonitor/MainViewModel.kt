@@ -2,15 +2,13 @@ package net.nourepide.learning.cryptocurrencymonitor
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableInt
-import android.view.View
 import net.nourepide.learning.cryptocurrencymonitor.entity.Cryptocurrency
 import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class MainViewModel : ViewModel() {
     val data = MutableLiveData<List<Cryptocurrency>>()
-    val isVisible = ObservableInt(View.VISIBLE)
+    var isLoading = MutableLiveData<Boolean>()
 
     init {
         thread {
@@ -31,6 +29,6 @@ class MainViewModel : ViewModel() {
                 )
             }.toList().apply { data.postValue(this) }
 
-        isVisible.set(View.GONE)
+        isLoading.postValue(false)
     }
 }
