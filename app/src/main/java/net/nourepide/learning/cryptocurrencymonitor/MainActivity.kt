@@ -18,24 +18,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        reload()
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = MainListAdapter(this@MainActivity, viewModel)
+        }
 
         viewModel.isLoading.observe(this, Observer {
             when (it) {
-                true -> binding.progressBar.visibility = View.VISIBLE
                 false -> binding.apply {
                     progressBar.visibility = View.GONE
                     recyclerView.animation = loadAnimation(applicationContext, R.anim.appearance)
                 }
             }
         })
-    }
-
-    @MainThread
-    private fun reload() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(this@MainActivity, viewModel).apply { notifyDataSetChanged() }
-        }
     }
 }
