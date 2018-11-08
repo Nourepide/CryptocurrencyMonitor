@@ -1,32 +1,32 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.Observer
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import net.nourepide.learning.cryptocurrencymonitor.MainListAdapter.MainViewHolder
+import net.nourepide.learning.cryptocurrencymonitor.databinding.ItemCryptocurrencyBinding
 
-class MainListAdapter(private val viewModel: MainViewModel) : RecyclerView.Adapter<MainListAdapter.MainViewHolder>() {
-    override fun onCreateViewHolder(viewGroup: ViewGroup, value: Int) = MainViewHolder(
-        LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.item_cryptocurrency, viewGroup, false)
-    )
+class MainListAdapter(lifecycle: LifecycleOwner, private val viewModel: MainViewModel) : Adapter<MainViewHolder>() {
 
-    override fun getItemCount() = viewModel.data.size
+    init {
+        viewModel.data.observe(lifecycle, Observer { notifyDataSetChanged() })
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
+        return MainViewHolder(
+            ItemCryptocurrencyBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+        )
+    }
+
+    override fun getItemCount() = viewModel.data.value!!.size
 
     override fun onBindViewHolder(viewHolder: MainViewHolder, value: Int) {
-        val source = viewModel.data[value]
-
-        viewHolder.apply {
-            number.text = source.number
-            name.text = source.name
-            symbol.text = source.symbol
-        }
+        viewHolder.binding.cryptocurrency = viewModel.data.value!![value]
     }
 
-    class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val number = itemView.findViewById<TextView>(R.id.number)!!
-        val name = itemView.findViewById<TextView>(R.id.name)!!
-        val symbol = itemView.findViewById<TextView>(R.id.symbol)!!
-    }
+    class MainViewHolder(val binding: ItemCryptocurrencyBinding) : RecyclerView.ViewHolder(binding.root)
 }
