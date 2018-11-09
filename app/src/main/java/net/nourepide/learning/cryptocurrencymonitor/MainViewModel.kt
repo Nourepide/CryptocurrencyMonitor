@@ -7,11 +7,17 @@ import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class MainViewModel : ViewModel() {
-    val data = mutableLiveData(listOf<Cryptocurrency>())
+    val data = mutableLiveData<List<Cryptocurrency>>()
     var isLoading = mutableLiveData(true)
 
     init {
+        reload()
+    }
+
+    fun reload() {
         thread {
+            data.postValue(null)
+
             val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
 
             (0 until jsonArray.length())
