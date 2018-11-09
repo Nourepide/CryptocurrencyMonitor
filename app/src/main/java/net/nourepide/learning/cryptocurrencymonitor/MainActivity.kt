@@ -22,10 +22,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.apply {
-                reload()
-                isLoading.value = true
-            }
+            viewModel.reload()
         }
 
         viewModel.isLoading.observe(this, Observer {
