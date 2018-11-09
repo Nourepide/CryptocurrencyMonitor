@@ -21,6 +21,13 @@ class MainActivity : AppCompatActivity() {
             adapter = MainListAdapter(this@MainActivity, viewModel)
         }
 
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.apply {
+                reload()
+                isLoading.value = true
+            }
+        }
+
         viewModel.isLoading.observe(this, Observer {
             when (it) {
                 true -> binding.swipeRefresh.isRefreshing = it
