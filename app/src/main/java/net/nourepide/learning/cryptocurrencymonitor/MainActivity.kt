@@ -4,10 +4,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.annotation.MainThread
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import android.view.animation.AnimationUtils.loadAnimation
 import net.nourepide.learning.cryptocurrencymonitor.databinding.ActivityMainBinding
 
@@ -25,8 +23,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.isLoading.observe(this, Observer {
             when (it) {
+                true -> binding.swipeRefresh.isRefreshing = it
                 false -> binding.apply {
-                    progressBar.visibility = View.GONE
+                    binding.swipeRefresh.isRefreshing = it
                     recyclerView.animation = loadAnimation(applicationContext, R.anim.appearance)
                 }
             }
