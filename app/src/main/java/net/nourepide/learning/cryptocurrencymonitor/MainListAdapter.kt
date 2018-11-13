@@ -22,7 +22,7 @@ class MainListAdapter(lifecycle: LifecycleOwner, private val viewModel: MainView
         )
     }
 
-    override fun getItemCount() = viewModel.data.value?.size ?: 0
+    override fun getItemCount() = viewModel.data.value!!.size
 
     override fun onBindViewHolder(viewHolder: MainViewHolder, value: Int) {
         viewHolder.binding.cryptocurrency = viewModel.data.value!![value]

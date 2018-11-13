@@ -7,8 +7,8 @@ import org.json.JSONObject
 import kotlin.concurrent.thread
 
 class MainViewModel : ViewModel() {
-    val data = mutableLiveData<List<Cryptocurrency>>()
-    val isLoading = mutableLiveData<Boolean>()
+    val data = mutableLiveData(listOf<Cryptocurrency>())
+    val isLoading = mutableLiveData(false)
 
     init {
         reload()
