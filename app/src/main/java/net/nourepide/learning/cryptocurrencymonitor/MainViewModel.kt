@@ -14,7 +14,7 @@ class MainViewModel : ViewModel() {
         reload()
     }
 
-    fun reload() {
+    private fun reload() {
         thread {
             isLoading.postValue(true)
             data.postValue(null)
@@ -33,5 +33,9 @@ class MainViewModel : ViewModel() {
 
             isLoading.postValue(false)
         }
+    }
+
+    fun handleRefreshSwipe() {
+        if (!isLoading.value!!) reload()
     }
 }
