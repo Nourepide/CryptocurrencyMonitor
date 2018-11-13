@@ -8,9 +8,15 @@ import kotlin.concurrent.thread
 
 class MainViewModel : ViewModel() {
     val data = mutableLiveData(listOf<Cryptocurrency>())
-    var isLoading = mutableLiveData(true)
+    val isLoading = mutableLiveData(false)
 
     init {
+        reload()
+    }
+
+    private fun reload() {
+        if (isLoading.value == true) return else isLoading.value = true
+
         thread {
             val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
 
@@ -26,5 +32,9 @@ class MainViewModel : ViewModel() {
 
             isLoading.postValue(false)
         }
+    }
+
+    fun handleRefreshSwipe() {
+        reload()
     }
 }
