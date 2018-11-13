@@ -15,10 +15,9 @@ class MainViewModel : ViewModel() {
     }
 
     private fun reload() {
-        thread {
-            isLoading.postValue(true)
-            data.postValue(null)
+        if (isLoading.value == true) return else isLoading.value = true
 
+        thread {
             val jsonArray = JSONObject(Utils.getDataURL()).getJSONArray("data")
 
             (0 until jsonArray.length())
@@ -36,6 +35,6 @@ class MainViewModel : ViewModel() {
     }
 
     fun handleRefreshSwipe() {
-        if (!isLoading.value!!) reload()
+        reload()
     }
 }
