@@ -27,6 +27,7 @@ class MainListAdapter(val lifecycle: LifecycleOwner, private val viewModel: Main
         viewHolder.itemView.setOnClickListener {
             MainDialogFragment()
                 .setArguments("TITLE", viewHolder.binding.cryptocurrency!!.run { "$name : $symbol" })
+                .setCancelableDialog(false)
                 .show((lifecycle as AppCompatActivity).supportFragmentManager, "tag")
         }
     }
