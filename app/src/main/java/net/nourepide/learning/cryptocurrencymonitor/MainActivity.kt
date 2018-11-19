@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(this@MainActivity, viewModel)
+            adapter = MainListAdapter(viewModel)
+            viewModel.data.observe(this@MainActivity, Observer { adapter!!.notifyDataSetChanged() })
         }
 
         binding.swipeRefresh.setOnRefreshListener {

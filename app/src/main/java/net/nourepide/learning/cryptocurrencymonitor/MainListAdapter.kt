@@ -10,11 +10,7 @@ import android.view.ViewGroup
 import net.nourepide.learning.cryptocurrencymonitor.MainListAdapter.MainViewHolder
 import net.nourepide.learning.cryptocurrencymonitor.databinding.ItemCryptocurrencyBinding
 
-class MainListAdapter(val lifecycle: LifecycleOwner, private val viewModel: MainViewModel) : Adapter<MainViewHolder>() {
-
-    init {
-        viewModel.data.observe(lifecycle, Observer { notifyDataSetChanged() })
-    }
+class MainListAdapter(private val viewModel: MainViewModel) : Adapter<MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MainViewHolder(
         ItemCryptocurrencyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
