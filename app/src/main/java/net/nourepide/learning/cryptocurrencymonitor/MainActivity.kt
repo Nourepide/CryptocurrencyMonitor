@@ -35,5 +35,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        viewModel.chosenCryptocurrency.observe(this, Observer {
+            MainDialogFragment()
+                .setArguments("TITLE", it!!.run { "$name : $symbol" })
+                .setCancelableDialog(false)
+                .show(supportFragmentManager, "tag")
+        })
     }
 }

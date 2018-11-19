@@ -9,6 +9,7 @@ import kotlin.concurrent.thread
 class MainViewModel : ViewModel() {
     val data = mutableLiveData(listOf<Cryptocurrency>())
     val isLoading = mutableLiveData(false)
+    val chosenCryptocurrency = mutableLiveData<Cryptocurrency>()
 
     init {
         reload()
@@ -36,5 +37,9 @@ class MainViewModel : ViewModel() {
 
     fun handleRefreshSwipe() {
         reload()
+    }
+
+    fun handleClick(cryptocurrency: Cryptocurrency) {
+        chosenCryptocurrency.value = cryptocurrency
     }
 }
