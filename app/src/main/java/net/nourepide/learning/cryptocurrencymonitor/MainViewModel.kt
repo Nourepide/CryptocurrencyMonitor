@@ -9,7 +9,7 @@ import kotlin.concurrent.thread
 class MainViewModel : ViewModel() {
     val data = mutableLiveData(listOf<Cryptocurrency>())
     val isLoading = mutableLiveData(false)
-    val chosenCryptocurrency = mutableLiveData<Cryptocurrency>()
+    val chosenCryptocurrency = mutableLiveData<Cryptocurrency?>()
 
     init {
         reload()
