@@ -12,19 +12,23 @@ import net.nourepide.learning.cryptocurrencymonitor.databinding.ActivityMainBind
 class MainActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
     private val binding by lazy { DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main) }
+    private val adapter by lazy { MainListAdapter(viewModel) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(viewModel)
-            viewModel.data.observe(this@MainActivity, Observer { adapter!!.notifyDataSetChanged() })
-        }
-
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.handleRefreshSwipe()
         }
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@MainActivity.adapter
+        }
+
+        viewModel.data.observe(this, Observer {
+            adapter.notifyDataSetChanged()
+        })
 
         viewModel.isLoading.observe(this, Observer {
             when (it) {
