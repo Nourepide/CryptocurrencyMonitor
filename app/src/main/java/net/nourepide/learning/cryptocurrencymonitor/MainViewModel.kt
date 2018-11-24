@@ -42,4 +42,8 @@ class MainViewModel : ViewModel() {
     fun setCryptocurrency(cryptocurrency: Cryptocurrency) {
         chosenCryptocurrency.value = cryptocurrency
     }
+
+    fun clearCryptocurrency() {
+        chosenCryptocurrency.value = null
+    }
 }
