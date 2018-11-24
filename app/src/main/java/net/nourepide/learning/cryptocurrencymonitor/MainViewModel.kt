@@ -39,7 +39,7 @@ class MainViewModel : ViewModel() {
         reload()
     }
 
-    fun handleClick(cryptocurrency: Cryptocurrency) {
+    fun setCryptocurrency(cryptocurrency: Cryptocurrency) {
         chosenCryptocurrency.value = cryptocurrency
     }
 }
