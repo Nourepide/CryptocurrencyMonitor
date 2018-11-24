@@ -37,10 +37,16 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.chosenCryptocurrency.observe(this, Observer {
-            MainDialogFragment()
-                .setArguments("TITLE", it!!.run { "$name : $symbol" })
-                .setCancelableDialog(false)
-                .show(supportFragmentManager, "tag")
+            val fragmentNotExist = supportFragmentManager.findFragmentByTag("mainDialogFragment") == null
+
+            if (it != null && fragmentNotExist) {
+                viewModel.clearCryptocurrency()
+
+                MainDialogFragment()
+                    .setArguments("TITLE", it.run { "$name : $symbol" })
+                    .setCancelableDialog(false)
+                    .show(supportFragmentManager, "mainDialogFragment")
+            }
         })
     }
 }
