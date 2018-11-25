@@ -43,14 +43,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.chosenCryptocurrency.observe(this, Observer {
             val fragmentNotExist = supportFragmentManager.findFragmentByTag("mainDialogFragment") == null
 
-            if (it != null && fragmentNotExist) {
-                viewModel.clearCryptocurrency()
-
-                MainDialogFragment()
-                    .setArguments("TITLE", it.run { "$name : $symbol" })
-                    .setCancelableDialog(false)
-                    .show(supportFragmentManager, "mainDialogFragment")
-            }
+            if (it != null && fragmentNotExist) MainDialogFragment()
+                .setArguments("TITLE", it.run { "$name : $symbol" })
+                .setCancelableDialog(false)
+                .show(supportFragmentManager, "mainDialogFragment")
         })
     }
 }

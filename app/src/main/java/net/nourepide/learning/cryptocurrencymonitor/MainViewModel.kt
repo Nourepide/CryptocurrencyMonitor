@@ -43,7 +43,11 @@ class MainViewModel : ViewModel() {
         chosenCryptocurrency.value = cryptocurrency
     }
 
-    fun clearCryptocurrency() {
-        chosenCryptocurrency.value = null
+    fun clearCryptocurrency() = when (chosenCryptocurrency.value != null) {
+        false -> false
+        true -> {
+            chosenCryptocurrency.value = null
+            true
+        }
     }
 }
