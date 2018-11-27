@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.animation.AnimationUtils.loadAnimation
@@ -16,14 +17,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = MainListAdapter(this@MainActivity, viewModel)
-        }
-
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.handleRefreshSwipe()
         }
+
+        val adapter = MainListAdapter(viewModel)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            this@apply.adapter = adapter
+        }
+
+        viewModel.data.observe(this, Observer {
+            adapter.notifyDataSetChanged()
+        })
 
         viewModel.isLoading.observe(this, Observer {
             when (it) {
@@ -34,5 +41,22 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
+        viewModel.chosenCryptocurrency.observe(this, Observer {
+            val fragment = findFragmentByTag<MainDialogFragment>("mainDialogFragment")
+
+            when {
+                it != null && fragment == null -> MainDialogFragment()
+                    .setArguments("TITLE", it.run { "$name : $symbol" })
+                    .setCancelableDialog(false)
+                    .show(supportFragmentManager, "mainDialogFragment")
+
+                it == null && fragment != null -> fragment.dismiss()
+            }
+        })
+    }
+
+    private inline fun <reified T : Fragment> findFragmentByTag(tag: String): T? {
+        return supportFragmentManager.findFragmentByTag(tag) as? T
     }
 }
