@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.animation.AnimationUtils.loadAnimation
@@ -41,12 +42,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.chosenCryptocurrency.observe(this, Observer {
-            val fragmentNotExist = supportFragmentManager.findFragmentByTag("mainDialogFragment") == null
+            val fragment = findFragmentByTag<MainDialogFragment>("mainDialogFragment")
 
-            if (it != null && fragmentNotExist) MainDialogFragment()
-                .setArguments("TITLE", it.run { "$name : $symbol" })
-                .setCancelableDialog(false)
-                .show(supportFragmentManager, "mainDialogFragment")
+            when {
+                it != null && fragment == null -> MainDialogFragment()
+                    .setArguments("TITLE", it.run { "$name : $symbol" })
+                    .setCancelableDialog(false)
+                    .show(supportFragmentManager, "mainDialogFragment")
+
+                it == null && fragment != null -> fragment.dismiss()
+            }
         })
+    }
+
+    private inline fun <reified T : Fragment> findFragmentByTag(tag: String): T? {
+        return supportFragmentManager.findFragmentByTag(tag) as? T
     }
 }
