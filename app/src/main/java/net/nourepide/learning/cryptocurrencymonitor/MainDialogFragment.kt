@@ -26,7 +26,7 @@ class MainDialogFragment : DialogFragment() {
             .setTitle(arguments!!["TITLE"] as String)
             .setPositiveButton("Close", null)
             .create()!!
-            .setOnClickPositive { viewModel.clearCryptocurrency() }
+            .setOnClickPositive { viewModel.handleCloseClick() }
             .setOnCleanObserver { dismiss() }
 
     private fun AlertDialog.setOnClickPositive(block: () -> Unit): AlertDialog {

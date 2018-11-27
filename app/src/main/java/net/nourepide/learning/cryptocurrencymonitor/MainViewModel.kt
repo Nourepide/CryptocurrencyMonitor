@@ -39,15 +39,11 @@ class MainViewModel : ViewModel() {
         reload()
     }
 
-    fun setCryptocurrency(cryptocurrency: Cryptocurrency) {
+    fun handleOpenClick(cryptocurrency: Cryptocurrency) {
         chosenCryptocurrency.value = cryptocurrency
     }
 
-    fun clearCryptocurrency() = when (chosenCryptocurrency.value != null) {
-        false -> false
-        true -> {
-            chosenCryptocurrency.value = null
-            true
-        }
+    fun handleCloseClick() {
+        chosenCryptocurrency.value = null
     }
 }
