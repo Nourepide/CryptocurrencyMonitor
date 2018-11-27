@@ -1,5 +1,6 @@
 package net.nourepide.learning.cryptocurrencymonitor
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -22,10 +23,11 @@ class MainDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(context!!)
-        .setTitle(arguments!!["TITLE"] as String)
-        .setPositiveButton("Close", null)
-        .create()!!
-        .setOnClickPositive { close(viewModel.clearCryptocurrency()) }
+            .setTitle(arguments!!["TITLE"] as String)
+            .setPositiveButton("Close", null)
+            .create()!!
+            .setOnClickPositive { viewModel.clearCryptocurrency() }
+            .setOnCleanObserver { dismiss() }
 
     private fun AlertDialog.setOnClickPositive(block: () -> Unit): AlertDialog {
         setOnShowListener {
@@ -35,7 +37,11 @@ class MainDialogFragment : DialogFragment() {
         return this
     }
 
-    private fun close(value: Boolean) {
-        if (value) dismiss()
+    private fun <T> T.setOnCleanObserver(block: () -> Unit) : T {
+        viewModel.chosenCryptocurrency.observe(this@MainDialogFragment, Observer {
+            if (it == null) block()
+        })
+
+        return this
     }
 }
